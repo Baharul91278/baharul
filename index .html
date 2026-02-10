@@ -1,80 +1,192 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Refer & Earn App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body{
-      font-family: Arial;
-      text-align:center;
-      background:#f2f2f2;
-      padding:20px;
-    }
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Earn Quiz App</title>
 
-    .box{
-      background:white;
-      padding:20px;
-      border-radius:10px;
-      margin-top:20px;
-      box-shadow:0 0 10px #ccc;
-    }
+<style>
+body{
+  font-family: Arial;
+  background:#f2f2f2;
+  text-align:center;
+  padding:10px;
+}
 
-    button{
-      padding:12px 20px;
-      border:none;
-      background:#28a745;
-      color:white;
-      border-radius:5px;
-      font-size:16px;
-      margin:10px;
-    }
-  </style>
+.box{
+  background:white;
+  margin:10px;
+  padding:15px;
+  border-radius:10px;
+  box-shadow:0 0 5px #ccc;
+}
+
+button{
+  padding:10px 15px;
+  margin:5px;
+  border:none;
+  background:#28a745;
+  color:white;
+  border-radius:5px;
+}
+
+input{
+  padding:8px;
+  margin:5px;
+}
+</style>
 </head>
 
 <body>
 
-<h2>💸 Refer & Earn App</h2>
+<h2>💸 Earn Quiz App</h2>
 
-<div class="box">
-  <h3>Your Points: <span id="points">0</span></h3>
+<!-- LOGIN -->
+<div class="box" id="loginBox">
+<h3>Login</h3>
+<input id="name" placeholder="Enter Name">
+<br>
+<button onclick="login()">Login</button>
 </div>
 
-<div class="box">
-  <button onclick="watchAd()">📺 Watch Ad & Earn 10</button>
-  <button onclick="refer()">👥 Refer Friend +50</button>
-</div>
+<!-- APP -->
+<div id="app" style="display:none">
 
 <div class="box">
-  <h3>Your Referral Link</h3>
-  <input id="link" value="https://yourapp.com/?ref=12345" style="width:90%">
-  <button onclick="copy()">Copy Link</button>
+👤 <span id="user"></span><br>
+💰 Coins: <b id="coins">0</b>
+</div>
+
+<!-- REFER -->
+<div class="box">
+<h3>Refer & Earn</h3>
+<button onclick="refer()">Refer Friend +50</button>
+</div>
+
+<!-- ADS TASK -->
+<div class="box">
+<h3>Daily Task</h3>
+<button onclick="watchAd()">Watch Ad +10</button>
+</div>
+
+<!-- DEPOSIT -->
+<div class="box">
+<h3>Deposit Coins</h3>
+<button onclick="deposit(100)">+100</button>
+<button onclick="deposit(200)">+200</button>
+<button onclick="deposit(500)">+500</button>
+<button onclick="deposit(1000)">+1000</button>
+</div>
+
+<!-- QUIZ GAME -->
+<div class="box">
+<h3>Quiz Game (+20 win)</h3>
+<p id="question"></p>
+<div id="answers"></div>
+</div>
+
+<!-- WITHDRAW -->
+<div class="box">
+<h3>Withdraw</h3>
+<button onclick="withdraw()">Withdraw (1000 coins)</button>
+</div>
+
 </div>
 
 <script>
 
-let points = 0;
+let coins = 0;
+let currentAnswer = "";
 
+/* LOGIN */
+function login(){
+  let name = document.getElementById("name").value;
+  if(name=="") return alert("Enter name");
+
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("app").style.display="block";
+  document.getElementById("user").innerText=name;
+
+  loadQuiz();
+}
+
+/* UPDATE */
 function update(){
-  document.getElementById("points").innerText = points;
+  document.getElementById("coins").innerText = coins;
 }
 
-function watchAd(){
-  alert("Ad watched successfully!");
-  points += 10;
-  update();
-}
-
+/* REFER */
 function refer(){
-  alert("Friend joined!");
-  points += 50;
+  coins += 50;
+  alert("Referral Bonus +50");
   update();
 }
 
-function copy(){
-  let copyText = document.getElementById("link");
-  copyText.select();
-  document.execCommand("copy");
-  alert("Link Copied!");
+/* AD */
+function watchAd(){
+  coins += 10;
+  alert("Ad watched +10");
+  update();
+}
+
+/* DEPOSIT */
+function deposit(a){
+  coins += a;
+  update();
+}
+
+/* WITHDRAW */
+function withdraw(){
+  if(coins >= 1000){
+    coins -= 1000;
+    alert("Withdraw request sent ✅");
+  }else{
+    alert("Need minimum 1000 coins");
+  }
+  update();
+}
+
+/* QUIZ GAME */
+const quiz = [
+  {
+    q:"India capital?",
+    a:["Delhi","Mumbai","Kolkata","Chennai"],
+    c:"Delhi"
+  },
+  {
+    q:"5 + 3 = ?",
+    a:["6","7","8","9"],
+    c:"8"
+  },
+  {
+    q:"Sun rises from?",
+    a:["West","North","East","South"],
+    c:"East"
+  }
+];
+
+function loadQuiz(){
+  let x = quiz[Math.floor(Math.random()*quiz.length)];
+  currentAnswer = x.c;
+
+  document.getElementById("question").innerText = x.q;
+
+  let ansHTML="";
+  x.a.forEach(i=>{
+    ansHTML += `<button onclick="check('${i}')">${i}</button>`;
+  });
+
+  document.getElementById("answers").innerHTML = ansHTML;
+}
+
+function check(a){
+  if(a == currentAnswer){
+    coins += 20;
+    alert("Correct +20 🎉");
+  }else{
+    alert("Wrong ❌");
+  }
+  update();
+  loadQuiz();
 }
 
 </script>
