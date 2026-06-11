@@ -1,195 +1,144 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Earn Quiz App</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yono Games Hub</title>
 
 <style>
+*{
+margin:0;
+padding
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
 body{
-  font-family: Arial;
-  background:#f2f2f2;
-  text-align:center;
-  padding:10px;
+background:#f4f6f9;
 }
 
-.box{
-  background:white;
-  margin:10px;
-  padding:15px;
-  border-radius:10px;
-  box-shadow:0 0 5px #ccc;
+header{
+background:#0a7f3f;
+color:white;
+padding:20px;
+text-align:center;
+font-size:28px;
+font-weight:bold;
 }
 
-button{
-  padding:10px 15px;
-  margin:5px;
-  border:none;
-  background:#28a745;
-  color:white;
-  border-radius:5px;
+.container{
+max-width:1100px;
+margin:auto;
+padding:20px;
 }
 
-input{
-  padding:8px;
-  margin:5px;
+.card{
+background:white;
+border-radius:15px;
+padding:15px;
+margin-bottom:20px;
+display:flex;
+align-items:center;
+gap:20px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+.card img{
+width:120px;
+height:120px;
+object-fit:cover;
+border-radius:15px;
+}
+
+.info{
+flex:1;
+}
+
+.info h2{
+margin-bottom:10px;
+color:#222;
+}
+
+.info p{
+margin:5px 0;
+}
+
+.btn{
+display:inline-block;
+margin-top:10px;
+padding:12px 25px;
+background:#0066ff;
+color:white;
+text-decoration:none;
+border-radius:8px;
+font-weight:bold;
+}
+
+.btn:hover{
+background:#004bcc;
+}
+
+footer{
+text-align:center;
+padding:20px;
+color:#666;
 }
 </style>
 </head>
-
 <body>
 
-<h2>💸 Earn Quiz App</h2>
+<header>
+ðŸŽ® Yono Games Hub
+</header>
 
-<!-- LOGIN -->
-<div class="box" id="loginBox">
-<h3>Login</h3>
-<input id="name" placeholder="Enter Name">
-<br>
-<button onclick="login()">Login</button>
+<div class="container">
+
+<div class="card">
+<img src="https://i.ibb.co/JjrZjn2n/teen-patti-master.jpg" alt="Teen Patti Master">
+<div class="info">
+<h2>Teen Patti Master</h2>
+<p>Popular Teen Patti Card Game.</p>
+<a class="btn" href="https://www.earntp.com/m/jm9n7r" target="_blank">
+Download Now
+</a>
+</div>
 </div>
 
-<!-- APP -->
-<div id="app" style="display:none">
-
-<div class="box">
-👤 <span id="user"></span><br>
-💰 Coins: <b id="coins">0</b>
+<div class="card">
+<img src="https://i.ibb.co/zTFDGPpX/yono-rummy.jpg" alt="Yono Rummy">
+<div class="info">
+<h2>Yono Rummy</h2>
+<p>â‚¹13+ Signup Bonus</p>
+<p>Daily Login Rewards up to â‚¹90</p>
+<p>3% - 30% Deposit Cashback</p>
+<a class="btn"
+href="https://yonorummy043.com/?code=VIPYQC5EE9X&t=1781107758"
+target="_blank">
+Play Now
+</a>
+</div>
 </div>
 
-<!-- REFER -->
-<div class="box">
-<h3>Refer & Earn</h3>
-<button onclick="refer()">Refer Friend +50</button>
+<div class="card">
+<img src="https://i.ibb.co/NdbNBtx7/slots-winner.jpg" alt="Slots Winner">
+<div class="info">
+<h2>Slots Winner</h2>
+<p>â‚¹18 - â‚¹100 Signup Bonus</p>
+<p>250% First Deposit Bonus</p>
+<p>VIP Cashback & Referral Rewards</p>
+<a class="btn"
+href="https://slotswinneri.com/?code=PGVC6CBNF53&t=1781107393"
+target="_blank">
+Join Now
+</a>
 </div>
-
-<!-- ADS TASK -->
-<div class="box">
-<h3>Daily Task</h3>
-<button onclick="watchAd()">Watch Ad +10</button>
-</div>
-
-<!-- DEPOSIT -->
-<div class="box">
-<h3>Deposit Coins</h3>
-<button onclick="deposit(100)">+100</button>
-<button onclick="deposit(200)">+200</button>
-<button onclick="deposit(500)">+500</button>
-<button onclick="deposit(1000)">+1000</button>
-</div>
-
-<!-- QUIZ GAME -->
-<div class="box">
-<h3>Quiz Game (+20 win)</h3>
-<p id="question"></p>
-<div id="answers"></div>
-</div>
-
-<!-- WITHDRAW -->
-<div class="box">
-<h3>Withdraw</h3>
-<button onclick="withdraw()">Withdraw (1000 coins)</button>
 </div>
 
 </div>
 
-<script>
-
-let coins = 0;
-let currentAnswer = "";
-
-/* LOGIN */
-function login(){
-  let name = document.getElementById("name").value;
-  if(name=="") return alert("Enter name");
-
-  document.getElementById("loginBox").style.display="none";
-  document.getElementById("app").style.display="block";
-  document.getElementById("user").innerText=name;
-
-  loadQuiz();
-}
-
-/* UPDATE */
-function update(){
-  document.getElementById("coins").innerText = coins;
-}
-
-/* REFER */
-function refer(){
-  coins += 50;
-  alert("Referral Bonus +50");
-  update();
-}
-
-/* AD */
-function watchAd(){
-  coins += 10;
-  alert("Ad watched +10");
-  update();
-}
-
-/* DEPOSIT */
-function deposit(a){
-  coins += a;
-  update();
-}
-
-/* WITHDRAW */
-function withdraw(){
-  if(coins >= 1000){
-    coins -= 1000;
-    alert("Withdraw request sent ✅");
-  }else{
-    alert("Need minimum 1000 coins");
-  }
-  update();
-}
-
-/* QUIZ GAME */
-const quiz = [
-  {
-    q:"India capital?",
-    a:["Delhi","Mumbai","Kolkata","Chennai"],
-    c:"Delhi"
-  },
-  {
-    q:"5 + 3 = ?",
-    a:["6","7","8","9"],
-    c:"8"
-  },
-  {
-    q:"Sun rises from?",
-    a:["West","North","East","South"],
-    c:"East"
-  }
-];
-
-function loadQuiz(){
-  let x = quiz[Math.floor(Math.random()*quiz.length)];
-  currentAnswer = x.c;
-
-  document.getElementById("question").innerText = x.q;
-
-  let ansHTML="";
-  x.a.forEach(i=>{
-    ansHTML += `<button onclick="check('${i}')">${i}</button>`;
-  });
-
-  document.getElementById("answers").innerHTML = ansHTML;
-}
-
-function check(a){
-  if(a == currentAnswer){
-    coins += 20;
-    alert("Correct +20 🎉");
-  }else{
-    alert("Wrong ❌");
-  }
-  update();
-  loadQuiz();
-}
-
-</script>
+<footer>
+Â© 2025 Yono Games Hub
+</footer>
 
 </body>
 </html>
